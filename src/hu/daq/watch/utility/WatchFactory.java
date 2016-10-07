@@ -48,6 +48,12 @@ public class WatchFactory {
        t.attachWatch(sw);
        return t;
     }    
+
+    public static TimeDisplay getTsecHidingWatchDisplay(BaseWatch sw){
+       TimeDisplay t = new TimeDisplay(sw.hasHour(),sw.hasMin(),true,true);
+       t.attachWatch(sw);
+       return t;
+    }
     
     public static RingDisplay getRingDisplay(BaseWatch sw, double size, Color color){
         RingDisplay r = new RingDisplay(size, color);
