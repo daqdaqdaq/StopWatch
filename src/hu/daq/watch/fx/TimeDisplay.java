@@ -98,7 +98,7 @@ public class TimeDisplay extends HBox {
         } 
         //initiate a setfont with the deafault font to resize the tsec label
         this.setFont(this.hour.getFont());
-        this.setAlignment(Pos.BASELINE_CENTER);
+        this.setAlignment(Pos.CENTER);
         //this.
         //this.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(1))));        
     }
@@ -108,11 +108,11 @@ public class TimeDisplay extends HBox {
         this.min.setFont(font);
         this.sec.setFont(font);
         //this.tsec.setFont(font);        
-        this.tsec.setFont(Font.font(font.getFamily(),font.getSize()-2));
+        this.tsec.setFont(font);
         this.firstcolon.setFont(font);
         this.secondcolon.setFont(font);
         //this.thirdcolon.setFont(font);
-        this.thirdcolon.setFont(Font.font(font.getFamily(),font.getSize()-2));
+        this.thirdcolon.setFont(font);
         
     }
     
