@@ -9,6 +9,7 @@ package hu.daq.watch.utility;
 import hu.daq.watch.BaseWatch;
 import hu.daq.watch.fx.RingDisplay;
 import hu.daq.watch.fx.TimeDisplay;
+import hu.daq.watch.fx.TimeDisplayTsecHiding;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 
@@ -50,7 +51,7 @@ public class WatchFactory {
     }    
 
     public static TimeDisplay getTsecHidingWatchDisplay(BaseWatch sw){
-       TimeDisplay t = new TimeDisplay(sw.hasHour(),sw.hasMin(),true,true);
+       TimeDisplayTsecHiding t = new TimeDisplayTsecHiding(sw.hasHour(),sw.hasMin(),true,true);
        t.attachWatch(sw);
        return t;
     }

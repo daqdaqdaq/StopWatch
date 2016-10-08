@@ -17,13 +17,15 @@ public class TimeDisplayTsecHiding extends TimeDisplay{
         super(h, m, s, ts);
         
         this.tsec.managedProperty().bind(this.tsec.visibleProperty());
+        this.thirdcolon.visibleProperty().bind(this.tsec.visibleProperty());
+        this.thirdcolon.managedProperty().bind(this.tsec.visibleProperty());        
         this.sec.textProperty().addListener((ObservableValue<? extends String> observable, String ov, String nv)->{
         
-            if (Integer.parseInt(nv)<10&&this.tsec.isVisible()){
-                this.tsec.setVisible(false);
-            }
-            if (Integer.parseInt(nv)>=10&&!this.tsec.isVisible()){
+            if (Integer.parseInt(nv)<10&&!this.tsec.isVisible()){
                 this.tsec.setVisible(true);
+            }
+            if (Integer.parseInt(nv)>=10&&this.tsec.isVisible()){
+                this.tsec.setVisible(false);
             }            
         });
     }
