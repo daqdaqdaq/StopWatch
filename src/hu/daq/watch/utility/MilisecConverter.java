@@ -35,15 +35,27 @@ public class MilisecConverter extends NumberStringConverter{
     }
 
 
-    @Override
-    public String toString(Number number) {
-        double n = (Math.round((double)number)/100)/10;
-        return super.toString(n); //To change body of generated methods, choose Tools | Templates.
+    public String toString(Double number) {
+        if (number == null){
+            return "";
+        }
+        
+        Double n = ((double)Math.round((float)(number/100)))/10;
+        return n.toString(); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Number fromString(String string) {
-        return (Double)super.fromString(string)*1000; //To change body of generated methods, choose Tools | Templates.
+    public Double fromString(String string) {
+        if (string == null){
+            return null;
+        }
+        
+        string = string.trim();
+        if (string.length() < 1){
+            return null;
+        }
+        
+        return (Double.parseDouble(string))*1000; //To change body of generated methods, choose Tools | Templates.
     }
     
 }

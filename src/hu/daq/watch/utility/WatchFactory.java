@@ -7,7 +7,7 @@ package hu.daq.watch.utility;
 
 
 import hu.daq.watch.BaseWatch;
-import hu.daq.watch.fx.EditableTimeDisplay;
+
 import hu.daq.watch.fx.RingDisplay;
 import hu.daq.watch.fx.TimeDisplay;
 import hu.daq.watch.fx.TimeDisplayTsecHiding;
@@ -44,12 +44,7 @@ public class WatchFactory {
        t.attachWatch(sw);
        return t;
     }
-
-    public static EditableTimeDisplay getEditableWatchDisplay(BaseWatch sw){
-       EditableTimeDisplay t = new EditableTimeDisplay(sw.hasHour(),sw.hasMin(),true,true);
-       t.attachWatch(sw);
-       return t;
-    }    
+   
     
     public static TimeDisplay getSimpleWatchDisplay(BaseWatch sw){
        TimeDisplay t = new TimeDisplay(sw.hasHour(),sw.hasMin(),true,false);
