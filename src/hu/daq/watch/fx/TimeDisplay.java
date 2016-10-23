@@ -17,7 +17,7 @@ import javafx.scene.text.Font;
  *
  * @author DAQ
  */
-public class TimeDisplay extends HBox {
+public class TimeDisplay extends HBox implements Settable {
 
     Label hour;
     Label min;
@@ -30,6 +30,9 @@ public class TimeDisplay extends HBox {
     Boolean needmin;
     Boolean needsec;
     Boolean needtsec;
+    BaseWatch sw;
+    TimeSetPopOver tsop;
+    RemoteTransmitter transmitter; 
 
     public TimeDisplay(Boolean h, Boolean m, Boolean s, Boolean ts) {
         
@@ -102,6 +105,23 @@ public class TimeDisplay extends HBox {
         //this.
         //this.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(1))));        
     }
+   
+    public void attachTransmitter(RemoteTransmitter transmitter){
+        this.transmitter = transmitter;
+    }
+    
+    public void transmittTime(int milisec){
+        if (this.transmitter!=null){
+            this.transmitter.transmit(milisec);
+        }
+    }
+    
+    public void enableTimeSetPopOver(){
+        this.tsop = new TimeSetPopOver(this);
+        this.setOnMouseClicked((ev) -> {
+            this.tsop.show(this);
+        });        
+    }
     
     public void setFont(Font font){
         this.hour.setFont(font);
@@ -138,6 +158,7 @@ public class TimeDisplay extends HBox {
     }    
     
     public void attachWatch(BaseWatch sw){
+        this.sw = sw;
         Time t = sw.getObservableTime();
         t.bindHour(this.hour.textProperty(), 1);        
         if (this.needhour){ //if we have a hour digit pad the mins to 2
@@ -151,6 +172,15 @@ public class TimeDisplay extends HBox {
             t.bindSec(this.sec.textProperty(), 1);        
         }
         t.bindTsec(this.tsec.textProperty(), 1);
+    }
+
+    @Override
+    public void setTime(int milisecs) {
+        this.sw.set(milisecs);
+    }
+
+    public BaseWatch getSw() {
+        return sw;
     }
     
 

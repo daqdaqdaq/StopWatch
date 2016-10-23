@@ -11,7 +11,7 @@ import javafx.beans.value.ObservableValue;
  *
  * @author DAQ
  */
-public class TimeDisplayTsecHiding extends TimeDisplay{
+public class TimeDisplayTsecHiding extends TimeDisplay {
 
     public TimeDisplayTsecHiding(Boolean h, Boolean m, Boolean s, Boolean ts) {
         super(h, m, s, ts);
