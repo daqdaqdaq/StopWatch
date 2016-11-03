@@ -11,6 +11,8 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 /**
  *
@@ -29,6 +31,7 @@ public abstract class BaseWatch {
     private boolean running;
     protected double milistocount;
     protected double currentmilis;
+    private ChangeListener listener;
 
     public BaseWatch(TimeEngine ti, int hours, int mins, int secs) {
         this.running = false;
@@ -39,8 +42,22 @@ public abstract class BaseWatch {
         this.computedmilis = new SimpleDoubleProperty();
         this.setTimeToCount(hours, mins, secs);
         this.currentmilis = 0;
-        this.ti = ti;
-        this.makeListener();
+
+        this.listener = (observable, ov, nv) -> {
+                    //System.out.println("New value "+nv);
+                    if (this.running) {
+                        if (!this.checkForTimeout()) {
+                            this.currentmilis += (double) nv;
+                            if (this.currentmilis > this.milistocount) {
+                                this.currentmilis = this.milistocount;
+                            }
+
+                            this.setTime();
+                        }
+                    }
+                };
+
+        this.setTimeEngine(ti);
         this.bindDigits();
     }
 
@@ -62,7 +79,7 @@ public abstract class BaseWatch {
     public int getTimeToCount() {
         return (int) this.milistocount;
     }
-    
+
     public void start() {
         //System.out.println("Watch is starting " + this.milistocount);
         this.running = true;
@@ -129,27 +146,14 @@ public abstract class BaseWatch {
          }, this.computedmilis));
          */
     }
-
-    private void makeListener() {
-        //System.out.println("making listener");
-        this.ti.getMilisecs().addListener((observable, ov, nv) -> {
-            //System.out.println("New value "+nv);
-            if (this.running) {
-                if (!this.checkForTimeout()) {
-                    this.currentmilis += (double) nv;
-                    if (this.currentmilis > this.milistocount) {
-                        this.currentmilis = this.milistocount;
-                    }
-
-                    this.setTime();
-                }
-            }
-            //if (this.running) {
-            //    this.currentmilis += (double) nv;
-            //    this.setTime();
-            //}
-        });
+    public void setTimeEngine(TimeEngine ti){
+        if (this.ti!= null){
+            this.ti.getMilisecs().removeListener(listener);
+        }
+        this.ti = ti;
+        this.ti.getMilisecs().addListener(listener);
     }
+
 
     protected boolean checkForTimeout() {
         //System.out.println("Checking for timeout");
