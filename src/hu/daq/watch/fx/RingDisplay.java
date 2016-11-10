@@ -46,7 +46,7 @@ public class RingDisplay extends StackPane{
         //this.setAlignment(Pos.CENTER);
         //this.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(1)))); 
         this.segments = new ArrayList<Shape>();
-        this.td = new TimeDisplay(false,false,true,false);
+        this.td = new TimeDisplay(false,true,true,false);
         this.td.setFont(new Font(30));
         this.td.setAlignment(Pos.CENTER);
         this.td.setColor(color);

@@ -18,7 +18,7 @@ import org.controlsfx.control.PopOver;
  */
 public class TimeSetPopOver extends PopOver {
 
-    ValidatingTextField timefield;
+    TextField timefield;
     TimeDisplay td;
 
     public TimeSetPopOver(TimeDisplay td) {
@@ -27,9 +27,9 @@ public class TimeSetPopOver extends PopOver {
         this.setDetachable(false);
         this.setDetached(false);
         this.setArrowLocation(ArrowLocation.TOP_CENTER);
-        this.timefield = new ValidatingTextField();
-        this.timefield.setPrefWidth(60);
-        this.setValidationPattern(td);
+        this.timefield = new TextField();
+        this.timefield.setMinWidth(150);
+        this.timefield.setMinWidth(150);        
         this.timefield.setFont(new Font(24));
         this.timefield.setPrefWidth(30);
         this.setContentNode(this.timefield);
@@ -42,7 +42,7 @@ public class TimeSetPopOver extends PopOver {
     }
     
     
-    private void setValidationPattern(TimeDisplay td){
+  /*  private void setValidationPattern(TimeDisplay td){
         BaseWatch bw = td.getSw();
         if (bw.hasMin()){
             //this.timefield.setValidationPattern("[0-5]?[0-9]{1}:[0-5]{1}[0-9]{1}(\\.[1-9])?");
@@ -52,23 +52,38 @@ public class TimeSetPopOver extends PopOver {
             this.timefield.setValidationPattern("00.0");
             this.timefield.setText("00.0");            
         }
-    }
+    }*/
     
     private void setTime() {
         if (this.timefield.getText() != null && this.timefield.getText().length() > 0) {
+            String min;
             String sec;
             String tsec;
             String[] workstr = this.timefield.getText().split(":");
-            String[] secpart = workstr[1].split(".");
-            System.out.println("secpart:"+Arrays.asList(secpart));
-            if (secpart.length == 2){
-                sec = secpart[0];
-                tsec = secpart[1]; 
+            if (workstr.length == 2){
+                min = workstr[0];
+                String[] secpart = workstr[1].split(".");
+                System.out.println("secpart:"+Arrays.asList(secpart));
+                if (secpart.length == 2){
+                    sec = secpart[0];
+                    tsec = secpart[1]; 
+                } else {
+                    sec = workstr[1];
+                    tsec = "0";
+                }
             } else {
-                sec = workstr[1];
-                tsec = "0";
+                min = "0";
+                String[] secpart = this.timefield.getText().split("\\.");
+                System.out.println("secpart:"+Arrays.asList(secpart));
+                if (secpart.length == 2){
+                    sec = secpart[0];
+                    tsec = secpart[1]; 
+                } else {
+                    sec = this.timefield.getText();
+                    tsec = "0";
+                }            
             }
-            int milisecs = Integer.parseInt(workstr[0])*60000+Integer.parseInt(sec)*1000+Integer.parseInt(tsec)*100;
+            int milisecs = Integer.parseInt(min)*60000+Integer.parseInt(sec)*1000+Integer.parseInt(tsec)*100;
             this.td.setTime(milisecs);
             //sends the time via the remote transmitter if it's present
             this.td.transmittTime(milisecs);
