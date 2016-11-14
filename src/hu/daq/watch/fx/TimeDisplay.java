@@ -7,6 +7,7 @@ package hu.daq.watch.fx;
 
 import hu.daq.watch.BaseWatch;
 import hu.daq.watch.Time;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -37,13 +38,20 @@ public class TimeDisplay extends HBox implements Settable {
     public TimeDisplay(Boolean h, Boolean m, Boolean s, Boolean ts) {
         
         this.hour = new Label("");
+        this.hour.setPadding(Insets.EMPTY);        
         this.min = new Label("");
+        this.min.setPadding(Insets.EMPTY);        
         //this.min.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(1))));        
         this.sec = new Label("");
+        this.sec.setPadding(Insets.EMPTY);
         this.tsec = new Label("");
+        this.tsec.setPadding(Insets.EMPTY);
         this.firstcolon = new Label(":");
+        this.firstcolon.setPadding(Insets.EMPTY);        
         this.secondcolon = new Label(":");
+        this.secondcolon.setPadding(Insets.EMPTY);        
         this.thirdcolon = new Label(".");        
+        this.thirdcolon.setPadding(Insets.EMPTY);        
         this.needhour = h;
         this.needmin = m;
         this.needsec = s;
