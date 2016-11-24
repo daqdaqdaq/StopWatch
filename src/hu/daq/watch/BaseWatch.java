@@ -32,9 +32,11 @@ public abstract class BaseWatch {
     protected double milistocount;
     protected double currentmilis;
     private ChangeListener listener;
+    private boolean timedout;
 
     public BaseWatch(TimeEngine ti, int hours, int mins, int secs) {
         this.running = false;
+        this.timedout = false;
         this.hour = new SimplePositiveIntegerProperty(0);
         this.min = new SimplePositiveIntegerProperty(0);
         this.sec = new SimplePositiveIntegerProperty(0);
@@ -73,6 +75,7 @@ public abstract class BaseWatch {
         //System.out.println("Set time to count:" + milisec);
         this.milistocount = milisec;
         this.currentmilis = 0;
+        this.timedout = false;
         //System.out.println("Time has set to:" + this.milistocount);
     }
 
@@ -92,6 +95,7 @@ public abstract class BaseWatch {
     public void reset() {
         //this.running = false;
         //this.set(0);
+        this.timedout = false;
         this.currentmilis = 0;
         this.setTime();
     }
@@ -107,6 +111,7 @@ public abstract class BaseWatch {
         } else if (milisec < 0) {
             milisec = 0;
         }
+        this.timedout = false;
         this.currentmilis = milisec;
         //System.out.println("Watch is set to:"+this.currentmilis);
         this.checkForTimeout();
@@ -157,8 +162,9 @@ public abstract class BaseWatch {
 
     protected boolean checkForTimeout() {
         //System.out.println("Checking for timeout");
-        if (this.currentmilis == this.milistocount && this.tl != null) {
+        if (this.currentmilis == this.milistocount && this.tl != null && !this.timedout) {
             //System.out.println("Timeout");
+            this.timedout = true;
             this.setTime();
             tl.timeout();
             return true;

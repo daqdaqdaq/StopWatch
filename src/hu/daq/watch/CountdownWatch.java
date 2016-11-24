@@ -27,7 +27,7 @@ public class CountdownWatch extends BaseWatch{
     
     @Override
         public void set(int milisec){
-        System.out.println("Watch is setting to:"+milisec);
+        //System.out.println("Watch is setting to:"+milisec);
         if (milisec > this.milistocount) {
             milisec = (int) this.milistocount;
         } else if (milisec < 0) {

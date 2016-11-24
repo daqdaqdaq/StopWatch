@@ -33,25 +33,25 @@ public class TimeDisplay extends HBox implements Settable {
     Boolean needtsec;
     BaseWatch sw;
     TimeSetPopOver tsop;
-    RemoteTransmitter transmitter; 
+    RemoteTransmitter transmitter;
 
     public TimeDisplay(Boolean h, Boolean m, Boolean s, Boolean ts) {
-        
+
         this.hour = new Label("");
-        this.hour.setPadding(Insets.EMPTY);        
+        this.hour.setPadding(Insets.EMPTY);
         this.min = new Label("");
-        this.min.setPadding(Insets.EMPTY);        
+        this.min.setPadding(Insets.EMPTY);
         //this.min.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(1))));        
         this.sec = new Label("");
         this.sec.setPadding(Insets.EMPTY);
         this.tsec = new Label("");
         this.tsec.setPadding(Insets.EMPTY);
         this.firstcolon = new Label(":");
-        this.firstcolon.setPadding(Insets.EMPTY);        
+        this.firstcolon.setPadding(Insets.EMPTY);
         this.secondcolon = new Label(":");
-        this.secondcolon.setPadding(Insets.EMPTY);        
-        this.thirdcolon = new Label(".");        
-        this.thirdcolon.setPadding(Insets.EMPTY);        
+        this.secondcolon.setPadding(Insets.EMPTY);
+        this.thirdcolon = new Label(".");
+        this.thirdcolon.setPadding(Insets.EMPTY);
         this.needhour = h;
         this.needmin = m;
         this.needsec = s;
@@ -61,77 +61,96 @@ public class TimeDisplay extends HBox implements Settable {
 
     private void build() {
         this.hour.setWrapText(false);
-        
+
         this.min.setWrapText(false);
         this.sec.setWrapText(false);
         this.tsec.setWrapText(false);
         this.firstcolon.setWrapText(false);
         this.secondcolon.setWrapText(false);
-        this.thirdcolon.setWrapText(false);       
-        
-        
-
+        this.thirdcolon.setWrapText(false);
 
         if (this.needhour) {
             this.getChildren().add(this.hour);
 
-            
         }
 
-        if (this.needmin){
-            
-           if (this.needhour ){
+        if (this.needmin) {
+
+            if (this.needhour) {
              //  this.getChildren().add(this.firstcolon);
-               
 
-           }
-           this.getChildren().add(this.min);
-           //this.getChildren().add(new Label("00"));
-
-        }
-       
-        if (this.needsec){
-           if (this.needmin){
-               this.getChildren().add(this.secondcolon);
-
-           }
-           this.getChildren().add(this.sec);
+            }
+            this.getChildren().add(this.min);
+            //this.getChildren().add(new Label("00"));
 
         }
 
-        if (this.needtsec){
-           if (this.needsec){
-               this.getChildren().add(this.thirdcolon);
- 
-           }
-           this.getChildren().add(this.tsec);
+        if (this.needsec) {
+            if (this.needmin) {
+                this.getChildren().add(this.secondcolon);
 
-        } 
+            }
+            this.getChildren().add(this.sec);
+
+        }
+
+        if (this.needtsec) {
+            if (this.needsec) {
+                this.getChildren().add(this.thirdcolon);
+
+            }
+            this.getChildren().add(this.tsec);
+
+        }
         //initiate a setfont with the deafault font to resize the tsec label
         this.setFont(this.hour.getFont());
         this.setAlignment(Pos.CENTER);
         //this.
         //this.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(1))));        
     }
-   
-    public void attachTransmitter(RemoteTransmitter transmitter){
+
+    private void setPauseStyle(Boolean ispaused) {
+        if (ispaused) {
+            this.hour.setId("pausedclock");
+            this.min.setId("pausedclock");
+            this.sec.setId("pausedclock");
+            //this.tsec.setFont(font);        
+            this.tsec.setId("pausedclock");
+            this.firstcolon.setId("pausedclock");
+            this.secondcolon.setId("pausedclock");
+            //this.thirdcolon.setFont(font);
+            this.thirdcolon.setId("pausedclock");
+        } else {
+            this.hour.setId(null);
+            this.min.setId(null);
+            this.sec.setId(null);
+            //this.tsec.setFont(font);        
+            this.tsec.setId(null);
+            this.firstcolon.setId(null);
+            this.secondcolon.setId(null);
+            //this.thirdcolon.setFont(font);
+            this.thirdcolon.setId(null);
+        }
+    }
+
+    public void attachTransmitter(RemoteTransmitter transmitter) {
         this.transmitter = transmitter;
     }
-    
-    public void transmittTime(int milisec){
-        if (this.transmitter!=null){
+
+    public void transmittTime(int milisec) {
+        if (this.transmitter != null) {
             this.transmitter.transmit(milisec);
         }
     }
-    
-    public void enableTimeSetPopOver(){
+
+    public void enableTimeSetPopOver() {
         this.tsop = new TimeSetPopOver(this);
         this.setOnMouseClicked((ev) -> {
             this.tsop.show(this);
-        });        
+        });
     }
-    
-    public void setFont(Font font){
+
+    public void setFont(Font font) {
         this.hour.setFont(font);
         this.min.setFont(font);
         this.sec.setFont(font);
@@ -141,43 +160,47 @@ public class TimeDisplay extends HBox implements Settable {
         this.secondcolon.setFont(font);
         //this.thirdcolon.setFont(font);
         this.thirdcolon.setFont(font);
-        
+
     }
-    
-    public void setColor(Color color){
+
+    public void setColor(Color color) {
         this.firstcolon.setTextFill(color);
         this.secondcolon.setTextFill(color);
         this.thirdcolon.setTextFill(color);
         this.hour.setTextFill(color);
         this.min.setTextFill(color);
-        this.sec.setTextFill(color);        
-        this.tsec.setTextFill(color);                
-    }
-    
-    public void setFontSize(double size){
-       
-        Font f = this.hour.getFont();
-        this.setFont(Font.font(f.getFamily(),size));
+        this.sec.setTextFill(color);
+        this.tsec.setTextFill(color);
     }
 
-    public void setFontFamily(String family){
+    public void setFontSize(double size) {
+
         Font f = this.hour.getFont();
-        this.setFont(Font.font(family,f.getSize()));
-    }    
-    
-    public void attachWatch(BaseWatch sw){
+        this.setFont(Font.font(f.getFamily(), size));
+    }
+
+    public void setFontFamily(String family) {
+        Font f = this.hour.getFont();
+        this.setFont(Font.font(family, f.getSize()));
+    }
+
+    public void attachWatch(BaseWatch sw) {
         this.sw = sw;
+        this.sw.getTimeEngineRunning().addListener((ob, ov, nv)->{
+            
+            this.setPauseStyle(!nv);
+        });        
         Time t = sw.getObservableTime();
-        t.bindHour(this.hour.textProperty(), 1);        
-        if (this.needhour){ //if we have a hour digit pad the mins to 2
+        t.bindHour(this.hour.textProperty(), 1);
+        if (this.needhour) { //if we have a hour digit pad the mins to 2
             t.bindMin(this.min.textProperty(), 2);
         } else {
-            t.bindMin(this.min.textProperty(), 1);            
+            t.bindMin(this.min.textProperty(), 1);
         }
-        if (this.needmin){
+        if (this.needmin) {
             t.bindSec(this.sec.textProperty(), 2);
         } else {
-            t.bindSec(this.sec.textProperty(), 1);        
+            t.bindSec(this.sec.textProperty(), 1);
         }
         t.bindTsec(this.tsec.textProperty(), 1);
     }
@@ -190,6 +213,5 @@ public class TimeDisplay extends HBox implements Settable {
     public BaseWatch getSw() {
         return sw;
     }
-    
 
 }
